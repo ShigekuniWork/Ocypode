@@ -1,7 +1,20 @@
 language: 'rust'
+layer: 'application'
+
+tags:
+  - 'rust'
+
+fileGroups:
+  sources:
+    - '**/*'
+  tests:
+    - '**/tests/**/*'
+    - '**/benches/**/*'
 
 tasks:
   audit:
+    inputs:
+      - '@globs(sources)'
     command: 'cargo deny check advisories'
     toolchain: 'rust'
     options:
@@ -9,6 +22,8 @@ tasks:
       runInCI: false
 
   build:
+    inputs:
+      - '@globs(sources)'
     command: 'cargo'
     toolchain: 'rust'
     args:
@@ -17,18 +32,27 @@ tasks:
       runFromWorkspaceRoot: true
   
   format:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     command: 'cargo fmt --all'
     toolchain: 'rust'
     options:
       runFromWorkspaceRoot: true
   
   format-check:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     toolchain: 'rust'
     command: 'cargo fmt --all --check'
     options:
       runFromWorkspaceRoot: true
 
   fix:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     deps: 
       - 'format'
       - 'lint'
@@ -37,24 +61,35 @@ tasks:
       runInCI: false
   
   lint:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     toolchain: 'rust'
     command: 'cargo clippy --all --all-targets --all-features'
     options:
       runFromWorkspaceRoot: true
   
   lint-check:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     toolchain: 'rust'
     command: 'cargo clippy --all --all-targets --all-features -- --deny warnings'
     options:
       runFromWorkspaceRoot: true
   
   test:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     toolchain: 'rust'
     command: 'cargo test --all --all-targets --all-features'
     options:
       runFromWorkspaceRoot: true
   
   run:
+    inputs:
+      - '@globs(sources)'
     command: 'cargo'
     toolchain: 'rust'
     args:
@@ -64,6 +99,9 @@ tasks:
       runInCI: false
   
   pre-commit:
+    inputs:
+      - '@globs(sources)'
+      - '@globs(tests)'
     deps: 
       - 'format-check'
       - 'lint-check'
