@@ -1,0 +1,37 @@
+language: 'rust'
+
+tasks:
+  build:
+    command: 'cargo'
+    toolchain: 'rust'
+    args:
+      - 'build'
+    options:
+      runFromWorkspaceRoot: true
+  
+  format:
+    toolchain: 'rust'
+    command: 'cargo fmt --all --check'
+    options:
+      runFromWorkspaceRoot: true
+  
+  lint:
+    toolchain: 'rust'
+    command: 'cargo clippy --all --all-targets --all-features -- --deny warnings'
+    options:
+      runFromWorkspaceRoot: true
+  
+  test:
+    toolchain: 'rust'
+    command: 'cargo test --all --all-targets --all-features'
+    options:
+      runFromWorkspaceRoot: true
+  
+  run:
+    command: 'cargo'
+    toolchain: 'rust'
+    args:
+      - 'run'
+    options:
+      runFromWorkspaceRoot: true
+      runInCI: false
