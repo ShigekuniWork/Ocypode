@@ -1,6 +1,13 @@
 language: 'rust'
 
 tasks:
+  audit:
+    command: 'cargo deny check advisories'
+    toolchain: 'rust'
+    options:
+      runFromWorkspaceRoot: true
+      runInCI: false
+
   build:
     command: 'cargo'
     toolchain: 'rust'
@@ -10,12 +17,32 @@ tasks:
       runFromWorkspaceRoot: true
   
   format:
+    command: 'cargo fmt --all'
+    toolchain: 'rust'
+    options:
+      runFromWorkspaceRoot: true
+  
+  format-check:
     toolchain: 'rust'
     command: 'cargo fmt --all --check'
     options:
       runFromWorkspaceRoot: true
+
+  fix:
+    deps: 
+      - 'format'
+      - 'lint'
+    options:
+      runFromWorkspaceRoot: true
+      runInCI: false
   
   lint:
+    toolchain: 'rust'
+    command: 'cargo clippy --all --all-targets --all-features'
+    options:
+      runFromWorkspaceRoot: true
+  
+  lint-check:
     toolchain: 'rust'
     command: 'cargo clippy --all --all-targets --all-features -- --deny warnings'
     options:
@@ -32,6 +59,14 @@ tasks:
     toolchain: 'rust'
     args:
       - 'run'
+    options:
+      runFromWorkspaceRoot: true
+      runInCI: false
+  
+  pre-commit:
+    deps: 
+      - 'format-check'
+      - 'lint-check'
     options:
       runFromWorkspaceRoot: true
       runInCI: false
