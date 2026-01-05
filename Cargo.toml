@@ -5,6 +5,6 @@ edition = "2024"
 
 [[bin]]
 name = "ocypode"
-path = "ocypode/main.rs"
+path = "src/main.rs"
 
 [dependencies]
