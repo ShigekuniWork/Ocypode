@@ -3,4 +3,4 @@ proto:
 
 rust:
   version: 1.92.0
-  syncToolchainConfig: true
+  syncToolchainConfig: false
