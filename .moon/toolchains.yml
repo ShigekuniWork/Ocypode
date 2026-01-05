@@ -2,5 +2,7 @@ proto:
   version: 0.54.1
 
 rust:
-  version: 1.92.0
-  syncToolchainConfig: false
+  components:
+    - 'clippy'
+    - 'rustfmt'
+  syncToolchainConfig: true
